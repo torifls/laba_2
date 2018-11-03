@@ -23,8 +23,9 @@ int main() {
 	}
 
 	stringstream ss1;
-
-	char c = ' ';
+	stringstream ss2;
+	stringstream ss3;
+	char c=' ';
 
 	while (!f.eof() && (c != '.' && c != '!' && c != '?' && c != '\n')) {
 		f.get(c);
@@ -34,10 +35,30 @@ int main() {
 
 	f.get(c);
 
+	while (!f.eof() && (c != '.' && c != '!' && c != '?' && c != '\n')) {
+		ss2 << c;
+		f.get(c);
+	}
+
+	ss2 << c;
+	f.get(c);
+
+	while (!f.eof() && (c != '.' && c != '!' && c != '?' && c != '\n')) {
+		ss3 << c;
+		f.get(c);
+	}
+
+	ss3 << c;
+	f.close();
+
 	string s;
 	cout << "Reverse: ";
 
+	getline(ss3, s);
 	cout << s << " ";
-	
+	getline(ss2, s);
+	cout << s << " ";
+	getline(ss1, s);
+	cout << s << " ";
 	return 0;
 }
