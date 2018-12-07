@@ -1,65 +1,42 @@
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 using namespace std;
 
-/*
-С использованием файловых и строковых потоков написать программу, которая считывает из текстового файла три предложения и выводит их в обратном порядке.
-*/
-
-int main() {
-	string path;
-	cout << "Enter path to file: ";
-	getline(cin, path);
-
-	fstream f;
-	f.exceptions(ifstream::failbit);
-	try {
-		f.open(path.c_str(), ios::in);
-		stringstream ss1;
-		stringstream ss2;
-		stringstream ss3;
-		char c = ' ';
-
-		while (!f.eof() && (c != '.' && c != '!' && c != '?' && c != '\n')) {
-			f.get(c);
-
-			ss1 << c;
-		}
-
-		f.get(c);
-
-		while (!f.eof() && (c != '.' && c != '!' && c != '?' && c != '\n')) {
-			ss2 << c;
-			f.get(c);
-		}
-
-		ss2 << c;
-		f.get(c);
-
-		while (!f.eof() && (c != '.' && c != '!' && c != '?' && c != '\n')) {
-			ss3 << c;
-			f.get(c);
-		}
-
-		ss3 << c;
-		f.close();
-
-		string s;
-		cout << "Reverse: ";
-
-		getline(ss3, s);
-		cout << s << " ";
-		getline(ss2, s);
-		cout << s << " ";
-		getline(ss1, s);
-		cout << s << " ";
-		//system("pause");
+int main(){
+	setlocale(LC_ALL, "");
+	const int files_cnt = 3;//количество файлв
+	string files[files_cnt];
+	//считываем имена файлов
+	for(int i = 0; i < files_cnt; ++i){
+		cout << "Введите путь к файлу " << i + 1 << ": ";
+		cin >> files[i];
 	}
-	catch (const ifstream::failure& exc)
-	{
-			cout << "Error: can't open file!" << endl<<exc.what()<<endl;
+	for(int i = 0; i < files_cnt; ++i){
+		ifstream in(files[i]);
+		string line;//предложение
+		stringstream ss;//строковый поток
+		int counter = 0;//счётчик предложений
+		while(getline(in, line)){//считываем по предложению
+			 ++counter;
+			 string tmp = ss.str();
+			 ss.str(string());
+			 ss << line << '\n' << tmp;
+		}
+		cout << '\n' << files[i] << '\n';
+		if(counter == 3){
+			cout << ss.str();
+		}
+		else if(counter < 3){
+			cout << "Предложений меньше 3";
+		}
+		else{
+			cout << "Предложений больше 3";
+		}
+		in.close();//закрываем файл			
 	}
-	return 0;
+	system("pause>>void");
+
 }
